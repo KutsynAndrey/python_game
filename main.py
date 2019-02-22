@@ -5,6 +5,9 @@ from button import Button, collision_rect, window_resize
 import units
 import time
 import ai
+import input_box
+from socket_server import Server
+from socket_client import Client
 
 pygame.init()
 
@@ -78,7 +81,7 @@ def main_screen(screen):
         if keys[pygame.K_UP]:
             current_shot = time.clock()
             if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bulled()
+                unit.add_bullet()
                 last_shot = current_shot
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
@@ -181,7 +184,7 @@ def settings(screen):
         if keys[pygame.K_UP]:
             current_shot = time.clock()
             if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bulled()
+                unit.add_bullet()
                 last_shot = current_shot
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
@@ -282,7 +285,7 @@ def display(screen):
         if keys[pygame.K_UP]:
             current_shot = time.clock()
             if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bulled()
+                unit.add_bullet()
                 last_shot = current_shot
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
@@ -385,7 +388,7 @@ def start_with_ai(screen):
         if keys[pygame.K_UP]:
             current_shot = time.clock()
             if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bulled()
+                unit.add_bullet()
                 last_shot = current_shot
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
@@ -445,34 +448,55 @@ def fight_with_ai(screen):
             if event.type == pygame.QUIT:
                 sys.exit()
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            unit.move_left()
-        if keys[pygame.K_RIGHT]:
-            unit.move_right()
-        if keys[pygame.K_UP]:
-            current_shot = time.clock()
-            if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bulled()
-                last_shot = current_shot
-        if keys[pygame.K_SPACE] and unit.laser is None:
-            unit.create_laser()
 
-        for bullet in unit.bullets:
-            bullet.create_bullet()
-            bullet.move_up()
-            if bullet.y < -1 * 50:
-                unit.bullets.remove(bullet)
-            elif collision_rect(enemy_unit, bullet):
-                enemy_unit.health -= 5
-                unit.bullets.remove(bullet)
+        if not kw.pause:
+            if keys[pygame.K_LEFT]:
+                unit.move_left()
+            if keys[pygame.K_RIGHT]:
+                unit.move_right()
+            if keys[pygame.K_UP]:
+                current_shot = time.clock()
+                if current_shot - last_shot >= unit.fire_rate:
+                    unit.add_bullet()
+                    last_shot = current_shot
+            if keys[pygame.K_SPACE] and unit.laser is None:
+                unit.create_laser()
 
-        if unit.laser is not None:
-            unit.laser.shot()
-            if unit.laser.width <= 0:
-                unit.laser = None
+            if keys[pygame.K_ESCAPE]:
+                kw.pause = 1
+        else:
+            if keys[pygame.K_ESCAPE]:
+                kw.pause = 0
 
-        if kw.difficult == 'low':
-            ai.low_skill(enemy_unit, unit)
+        if not kw.pause:
+            for bullet in unit.bullets:
+                bullet.create_bullet()
+                bullet.move_up()
+                if bullet.y < -1 * 50:
+                    unit.bullets.remove(bullet)
+                elif collision_rect(enemy_unit, bullet):
+                    enemy_unit.health -= 5
+                    unit.bullets.remove(bullet)
+
+            for bullet in enemy_unit.bullets:
+                bullet.create_bullet()
+                bullet.move_down()
+                if bullet.y > h+bullet.height:
+                    enemy_unit.bullets.remove(bullet)
+                elif collision_rect(unit, bullet):
+                    unit.health -= 5
+                    enemy_unit.bullets.remove(bullet)
+
+            if unit.laser is not None:
+                unit.laser.shot()
+                if unit.laser.width <= 0:
+                    unit.laser = None
+            length = len(enemy_unit.bullets)
+            if kw.difficult == 'low':
+                current_time = time.clock()
+                ai.low_skill(enemy_unit, unit, enemy_last_shot, current_time)
+            if len(enemy_unit.bullets)-length > 0:
+                enemy_last_shot = time.clock()
 
         enemy_unit.health_bar()
         unit.health_bar()
@@ -481,6 +505,186 @@ def fight_with_ai(screen):
         enemy_unit.create_plane()
         enemy_unit.check_border()
         pygame.display.update()
+
+
+def connect_info(screen):
+
+    bw = kw.settins_pack[sk]['button']['width']
+    bh = kw.settins_pack[sk]['button']['height']
+    side = 'server'
+
+    input_ip = input_box.InputBox(screen,
+                                  width=kw.settins_pack[sk]['input_field']['width'],
+                                  height=kw.settins_pack[sk]['input_field']['height'],
+                                  font_size=kw.settins_pack[sk]['input_field']['font_size'],
+                                  border_width=10,
+                                  coordinates=(500, 600),
+                                  color=kw.colors['black'],
+                                  text_color=kw.colors['green'],
+                                  active_color=kw.colors['white'],
+                                  no_active_color=kw.colors['pink'],
+                                  field_name='write ip'
+                                  )
+
+    input_port = input_box.InputBox(screen,
+                                    width=kw.settins_pack[sk]['input_field']['width'],
+                                    height=kw.settins_pack[sk]['input_field']['height'],
+                                    font_size=kw.settins_pack[sk]['input_field']['font_size'],
+                                    border_width=10,
+                                    coordinates=(900, 600),
+                                    color=kw.colors['black'],
+                                    text_color=kw.colors['green'],
+                                    active_color=kw.colors['white'],
+                                    no_active_color=kw.colors['pink'],
+                                    field_name='write port'
+                                    )
+
+    button_server = Button(screen,
+                           width=bw,
+                           height=bh,
+                           text="SERVER",
+                           coordinates=(w // 3 - bw // 2, h // 3),
+                           font_size=kw.settins_pack[sk]['button']['font_size'],
+                           text_color=kw.colors["green"],
+                           background_color=kw.colors["white"]
+                           )
+
+    button_client = Button(screen,
+                           width=bw,
+                           height=bh,
+                           text="CLIENT",
+                           coordinates=(w // 3 * 2 - bw // 2, h // 3),
+                           font_size=kw.settins_pack[sk]['button']['font_size'],
+                           text_color=kw.colors["green"],
+                           background_color=kw.colors["white"]
+                           )
+
+    button_create_server = Button(screen,
+                                  width=bw,
+                                  height=bh,
+                                  text="CREATE",
+                                  coordinates=(w // 2 - bw // 2, h // 2 + 80),
+                                  font_size=kw.settins_pack[sk]['button']['font_size'],
+                                  text_color=kw.colors["green"],
+                                  background_color=kw.colors["white"]
+                                  )
+
+    while 1:
+        screen.fill(kw.colors["black"])
+
+        button_client.create_button()
+        button_server.create_button()
+        if side == 'client':
+            for event in pygame.event.get():
+                input_ip.check_event(event)
+                input_port.check_event(event)
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if button_server.collision_mouse(event):
+                    side = "server"
+
+            input_ip.render()
+            input_port.render()
+
+            if input_ip.enter:
+                kw.ip = input_ip.text
+                kw.port = int(input_port.text)
+                kw.run = 'fight_local'
+                return
+
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if button_client.collision_mouse(event):
+                    side = 'client'
+
+            button_create_server.create_button()
+
+        pygame.display.update()
+
+
+def fight_local(screen, side, **kwargs):
+
+    unit = units.units_pack[sk]['ally']["default_unit"]
+    unit.screen = screen
+    unit.x = w // 2 - unit.width // 2
+    unit.y = h - h // 5
+    last_shot = time.clock()
+
+    enemy_unit = units.units_pack[sk]['enemy']["default_unit"]
+    enemy_unit.screen = screen
+    enemy_unit.x = w // 2 - unit.width // 2
+    enemy_unit.y = h // 5
+
+    if side == 'server':
+        server = Server()
+        server.create_server()
+        server.connect()
+        print('connected')
+    elif side == 'client':
+        client = Client(ip=kw.ip, port=kw.port)
+        client.connect()
+
+    while True:
+        while 1:
+            screen.fill(kw.colors["black"])
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+            keys = pygame.key.get_pressed()
+
+            if not kw.pause:
+                if keys[pygame.K_LEFT]:
+                    unit.move_left()
+                if keys[pygame.K_RIGHT]:
+                    unit.move_right()
+                if keys[pygame.K_UP]:
+                    current_shot = time.clock()
+                    if current_shot - last_shot >= unit.fire_rate:
+                        unit.add_bullet()
+                        last_shot = current_shot
+                if keys[pygame.K_SPACE] and unit.laser is None:
+                    unit.create_laser()
+
+                if keys[pygame.K_ESCAPE]:
+                    kw.pause = 1
+            else:
+                if keys[pygame.K_ESCAPE]:
+                    kw.pause = 0
+
+            if not kw.pause:
+                for bullet in unit.bullets:
+                    bullet.create_bullet()
+                    bullet.move_up()
+                    if bullet.y < -1 * 50:
+                        unit.bullets.remove(bullet)
+                    elif collision_rect(enemy_unit, bullet):
+                        enemy_unit.health -= 5
+                        unit.bullets.remove(bullet)
+
+                for bullet in enemy_unit.bullets:
+                    bullet.create_bullet()
+                    bullet.move_down()
+                    if bullet.y > h + bullet.height:
+                        enemy_unit.bullets.remove(bullet)
+                    elif collision_rect(unit, bullet):
+                        unit.health -= 5
+                        enemy_unit.bullets.remove(bullet)
+
+                if unit.laser is not None:
+                    unit.laser.shot()
+                    if unit.laser.width <= 0:
+                        unit.laser = None
+                length = len(enemy_unit.bullets)
+            
+            enemy_unit.health_bar()
+            unit.health_bar()
+            unit.check_border()
+            unit.create_plane()
+            enemy_unit.create_plane()
+            enemy_unit.check_border()
+            pygame.display.update()
 
 
 while 1:
@@ -501,5 +705,10 @@ while 1:
         start_with_ai(sc)
     elif kw.run == 'fight':
         fight_with_ai(sc)
+    elif kw.run == 'start_local':
+        connect_info(sc)
+    elif kw.run == 'fight_local':
+        fight_local(sc, 'server', port=kw.port, ip=kw.ip)
+
 
 

@@ -41,14 +41,23 @@ class Plane:
             if self.form == 'rect':
                 draw.rect(self.screen, self.color, (self.x, self.y, self.width, self.height))
 
-    def add_bulled(self):
-        bullet = Bullet(self.screen,
-                        width=self.bullet_width,
-                        height=self.bullet_height,
-                        speed=self.bullet_speed,
-                        color=self.bullet_color,
-                        coordinates=(self.x + self.width // 2, self.y)
-                        )
+    def add_bullet(self):
+        if self.side == 'enemy':
+            bullet = Bullet(self.screen,
+                            width=self.bullet_width,
+                            height=self.bullet_height,
+                            speed=self.bullet_speed,
+                            color=self.bullet_color,
+                            coordinates=(self.x + self.width // 2, self.y + self.height)
+                            )
+        else:
+            bullet = Bullet(self.screen,
+                            width=self.bullet_width,
+                            height=self.bullet_height,
+                            speed=self.bullet_speed,
+                            color=self.bullet_color,
+                            coordinates=(self.x + self.width // 2, self.y)
+                            )
         self.bullets.append(bullet)
 
     def move_right(self):
@@ -67,7 +76,10 @@ class Plane:
 
     def health_bar(self):
         if self.health > 0:
-            height = self.height//5
+            height = self.height // 7
             width = int(self.width * (self.health / 100))
             color = (255, 0, 0)
-            draw.rect(self.screen, color, (self.x, self.y - self.height//10, width, height))
+            if self.side == 'ally':
+                draw.rect(self.screen, color, (self.x, self.y - self.height//10 - height, width, height))
+            else:
+                draw.rect(self.screen, color, (self.x, self.y + self.height + self.height // 10, width, height))

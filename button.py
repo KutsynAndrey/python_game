@@ -1,4 +1,4 @@
-from pygame import draw, display, font
+from pygame import draw, display, font, Rect, MOUSEBUTTONDOWN
 
 
 class Button:
@@ -25,6 +25,12 @@ class Button:
     def create_button(self):
         self.draw_background()
         self.write_text()
+
+    def collision_mouse(self, event):
+        if event.type == MOUSEBUTTONDOWN:
+            rect = Rect(self.x, self.y, self.width, self.height)
+            if rect.collidepoint(event.pos[0], event.pos[1]):
+                return True
 
 
 def collision_rect(object1, object2):
@@ -66,12 +72,13 @@ def collision_rect(object1, object2):
             return False
 
 
-def collision_line_rect(rect, line):
-    pass
-
-
 def window_resize(size):
     return display.set_mode(size)
+
+
+#######################################################################################################################
+
+
 
 
 

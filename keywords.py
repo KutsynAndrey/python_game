@@ -22,6 +22,11 @@ settins_pack = {
         "units": {
             "width": 100,
             "height": 100,
+        },
+        'input_field': {
+            "width": 400,
+            "height": 150,
+            "font_size": 65
         }
     },
     (1366, 768): {
@@ -44,3 +49,26 @@ sound = 'on'
 difficult = None
 screen_size = None
 last_ss = None
+pause = 0
+ip = None
+port = None
+side = None
+
+
+def create_current_settings(window_size):
+    pack = {
+        window_size: {
+            "button": {
+                "width": window_size[0] // 7,
+                "height": window_size[1] // 10,
+                "font_size": 50
+            },
+            "width": 1366,
+            "height": 768,
+            "units": {
+                "width": 75,
+                "height": 75,
+            }
+        }
+    }
+
