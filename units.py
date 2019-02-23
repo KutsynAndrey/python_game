@@ -20,7 +20,8 @@ units_pack = {
                                   laser_color=colors["white"],
                                   laser_width=35,
                                   fire_rate=0.4,
-                                  side="ally"
+                                  side="ally",
+                                  laser_fire_rate=7
                                   )
         },
         'enemy':
@@ -40,7 +41,8 @@ units_pack = {
                                   laser_color=colors["white"],
                                   laser_width=35,
                                   fire_rate=0.4,
-                                  side="enemy"
+                                  side="enemy",
+                                  laser_fire_rate=7
                                   )
         }
     },
@@ -62,7 +64,8 @@ units_pack = {
                                   laser_color=colors["white"],
                                   laser_width=25,
                                   fire_rate=0.4,
-                                  side="ally"
+                                  side="ally",
+                                  laser_fire_rate=7
                                   )
         },
         "enemy":
@@ -82,7 +85,8 @@ units_pack = {
                                   laser_color=colors["white"],
                                   laser_width=25,
                                   fire_rate=0.4,
-                                  side="enemy"
+                                  side="enemy",
+                                  laser_fire_rate=7
                                   )
         }
     }

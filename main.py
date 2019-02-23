@@ -24,7 +24,6 @@ def main_screen(screen):
     unit.screen = screen
     unit.x = w // 2 - unit.width // 2
     unit.y = h - h // 5
-    last_shot = time.clock()
     bw = kw.settins_pack[sk]['button']['width']
     bh = kw.settins_pack[sk]['button']['height']
 
@@ -79,10 +78,7 @@ def main_screen(screen):
         if keys[pygame.K_RIGHT]:
             unit.move_right()
         if keys[pygame.K_UP]:
-            current_shot = time.clock()
-            if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bullet()
-                last_shot = current_shot
+            unit.add_bullet()
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
 
@@ -127,7 +123,6 @@ def settings(screen):
     unit.screen = screen
     unit.x = w // 2 - unit.width // 2
     unit.y = h - h // 5
-    last_shot = time.clock()
     bw = kw.settins_pack[sk]['button']['width']
     bh = kw.settins_pack[sk]['button']['height']
 
@@ -182,10 +177,7 @@ def settings(screen):
         if keys[pygame.K_RIGHT]:
             unit.move_right()
         if keys[pygame.K_UP]:
-            current_shot = time.clock()
-            if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bullet()
-                last_shot = current_shot
+            unit.add_bullet()
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
 
@@ -228,7 +220,6 @@ def display(screen):
     unit.screen = screen
     unit.x = w // 2 - unit.width // 2
     unit.y = h - h // 5
-    last_shot = time.clock()
     bw = kw.settins_pack[sk]['button']['width']
     bh = kw.settins_pack[sk]['button']['height']
 
@@ -283,10 +274,7 @@ def display(screen):
         if keys[pygame.K_RIGHT]:
             unit.move_right()
         if keys[pygame.K_UP]:
-            current_shot = time.clock()
-            if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bullet()
-                last_shot = current_shot
+            unit.add_bullet()
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
 
@@ -331,7 +319,6 @@ def start_with_ai(screen):
     unit.screen = screen
     unit.x = w // 2 - unit.width // 2
     unit.y = h - h // 5
-    last_shot = time.clock()
     bw = kw.settins_pack[sk]['button']['width']
     bh = kw.settins_pack[sk]['button']['height']
 
@@ -386,10 +373,7 @@ def start_with_ai(screen):
         if keys[pygame.K_RIGHT]:
             unit.move_right()
         if keys[pygame.K_UP]:
-            current_shot = time.clock()
-            if current_shot - last_shot >= unit.fire_rate:
-                unit.add_bullet()
-                last_shot = current_shot
+            unit.add_bullet()
         if keys[pygame.K_SPACE] and unit.laser is None:
             unit.create_laser()
 
@@ -434,19 +418,20 @@ def fight_with_ai(screen):
     unit.screen = screen
     unit.x = w // 2 - unit.width // 2
     unit.y = h - h // 5
-    last_shot = time.clock()
 
     enemy_unit = units.units_pack[sk]['enemy']["default_unit"]
     enemy_unit.screen = screen
     enemy_unit.x = w // 2 - unit.width // 2
     enemy_unit.y = h // 5
-    enemy_last_shot = time.clock()
 
     while 1:
         screen.fill(kw.colors["black"])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    kw.pause = not kw.pause
         keys = pygame.key.get_pressed()
 
         if not kw.pause:
@@ -455,18 +440,9 @@ def fight_with_ai(screen):
             if keys[pygame.K_RIGHT]:
                 unit.move_right()
             if keys[pygame.K_UP]:
-                current_shot = time.clock()
-                if current_shot - last_shot >= unit.fire_rate:
-                    unit.add_bullet()
-                    last_shot = current_shot
+                unit.add_bullet()
             if keys[pygame.K_SPACE] and unit.laser is None:
                 unit.create_laser()
-
-            if keys[pygame.K_ESCAPE]:
-                kw.pause = 1
-        else:
-            if keys[pygame.K_ESCAPE]:
-                kw.pause = 0
 
         if not kw.pause:
             for bullet in unit.bullets:
@@ -491,12 +467,7 @@ def fight_with_ai(screen):
                 unit.laser.shot()
                 if unit.laser.width <= 0:
                     unit.laser = None
-            length = len(enemy_unit.bullets)
-            if kw.difficult == 'low':
-                current_time = time.clock()
-                ai.low_skill(enemy_unit, unit, enemy_last_shot, current_time)
-            if len(enemy_unit.bullets)-length > 0:
-                enemy_last_shot = time.clock()
+            ai.low_skill(enemy_unit, unit)
 
         enemy_unit.health_bar()
         unit.health_bar()
@@ -622,69 +593,77 @@ def fight_local(screen, side, **kwargs):
         server.create_server()
         server.connect()
         print('connected')
-    elif side == 'client':
-        client = Client(ip=kw.ip, port=kw.port)
-        client.connect()
+        while True:
 
-    while True:
-        while 1:
-            screen.fill(kw.colors["black"])
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
             keys = pygame.key.get_pressed()
 
-            if not kw.pause:
-                if keys[pygame.K_LEFT]:
-                    unit.move_left()
-                if keys[pygame.K_RIGHT]:
-                    unit.move_right()
-                if keys[pygame.K_UP]:
-                    current_shot = time.clock()
-                    if current_shot - last_shot >= unit.fire_rate:
-                        unit.add_bullet()
-                        last_shot = current_shot
-                if keys[pygame.K_SPACE] and unit.laser is None:
-                    unit.create_laser()
+            if keys[pygame.K_LEFT]:
+                unit.move_left()
+            if keys[pygame.K_RIGHT]:
+                unit.move_right()
+            if keys[pygame.K_UP]:
+                current_shot = time.clock()
+                if current_shot - last_shot >= unit.fire_rate:
+                    unit.add_bullet()
+                    last_shot = current_shot
+            if keys[pygame.K_SPACE] and unit.laser is None:
+                unit.create_laser()
 
-                if keys[pygame.K_ESCAPE]:
-                    kw.pause = 1
-            else:
-                if keys[pygame.K_ESCAPE]:
-                    kw.pause = 0
+            for bullet in unit.bullets:
+                bullet.create_bullet()
+                bullet.move_up()
+                if bullet.y < -1 * 50:
+                    unit.bullets.remove(bullet)
 
-            if not kw.pause:
-                for bullet in unit.bullets:
-                    bullet.create_bullet()
-                    bullet.move_up()
-                    if bullet.y < -1 * 50:
-                        unit.bullets.remove(bullet)
-                    elif collision_rect(enemy_unit, bullet):
-                        enemy_unit.health -= 5
-                        unit.bullets.remove(bullet)
+            for bullet in enemy_unit.bullets:
+                bullet.create_bullet()
+                bullet.move_down()
+                if bullet.y > h + bullet.height:
+                    enemy_unit.bullets.remove(bullet)
+                elif collision_rect(unit, bullet):
+                    unit.health -= 5
+                    enemy_unit.bullets.remove(bullet)
 
-                for bullet in enemy_unit.bullets:
-                    bullet.create_bullet()
-                    bullet.move_down()
-                    if bullet.y > h + bullet.height:
-                        enemy_unit.bullets.remove(bullet)
-                    elif collision_rect(unit, bullet):
-                        unit.health -= 5
-                        enemy_unit.bullets.remove(bullet)
+            server.send(unit)
+            enemy_unit = server.get(2048)
 
-                if unit.laser is not None:
-                    unit.laser.shot()
-                    if unit.laser.width <= 0:
-                        unit.laser = None
-                length = len(enemy_unit.bullets)
-            
-            enemy_unit.health_bar()
-            unit.health_bar()
-            unit.check_border()
-            unit.create_plane()
-            enemy_unit.create_plane()
-            enemy_unit.check_border()
-            pygame.display.update()
+    elif side == 'client':
+        client = Client(ip=kwargs['ip'], port=kwargs['port'])
+        client.connect()
+
+        while True:
+
+            keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_LEFT]:
+                unit.move_left()
+            if keys[pygame.K_RIGHT]:
+                unit.move_right()
+            if keys[pygame.K_UP]:
+                current_shot = time.clock()
+                if current_shot - last_shot >= unit.fire_rate:
+                    unit.add_bullet()
+                    last_shot = current_shot
+            if keys[pygame.K_SPACE] and unit.laser is None:
+                unit.create_laser()
+
+            for bullet in unit.bullets:
+                bullet.create_bullet()
+                bullet.move_up()
+                if bullet.y < -1 * 50:
+                    unit.bullets.remove(bullet)
+
+            for bullet in enemy_unit.bullets:
+                bullet.create_bullet()
+                bullet.move_down()
+                if bullet.y > h + bullet.height:
+                    enemy_unit.bullets.remove(bullet)
+                elif collision_rect(unit, bullet):
+                    unit.health -= 5
+                    enemy_unit.bullets.remove(bullet)
+
+            client.send(unit)
+            enemy_unit = client.get(2048)
 
 
 while 1:
