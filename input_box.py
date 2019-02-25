@@ -1,5 +1,5 @@
 from pygame import draw, key, font, Rect
-from pygame import MOUSEBUTTONDOWN, KEYDOWN, K_BACKSPACE, K_KP_ENTER
+from pygame import MOUSEBUTTONDOWN, KEYDOWN, K_BACKSPACE, K_RETURN
 from keywords import colors
 
 
@@ -55,7 +55,7 @@ class InputBox:
                 else:
                     if self.text_surface.get_width() < self.width - 30:
                         self.text += event.unicode
-                if event.key == K_KP_ENTER:
+                if event.key == K_RETURN:
                     self.enter = True
 
 

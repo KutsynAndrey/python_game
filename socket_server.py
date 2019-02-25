@@ -21,7 +21,6 @@ class Server:
             except PermissionError and OSError:
                 self.port = self.port + 1
 
-        sock.bind(('', self.port))
         sock.listen(1)
         self.sock = sock
 

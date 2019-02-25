@@ -40,6 +40,11 @@ settins_pack = {
         "units": {
             "width": 75,
             "height": 75,
+        },
+        'input_field': {
+            "width": 330,
+            "height": 100,
+            "font_size": 50
         }
     }
 }

@@ -10,6 +10,8 @@ class Client:
         self.sock = socket.socket()
 
     def connect(self):
+        print('port -', self.port)
+        print('ip -', self.ip)
         self.sock.connect((self.ip, self.port))
 
     def send(self, data):

@@ -569,6 +569,9 @@ def connect_info(screen):
                     sys.exit()
                 if button_client.collision_mouse(event):
                     side = 'client'
+                if button_create_server.collision_mouse(event):
+                    kw.run = 'fight_local'
+                    return
 
             button_create_server.create_button()
 
@@ -576,6 +579,7 @@ def connect_info(screen):
 
 
 def fight_local(screen, side, **kwargs):
+    print('local_fight')
 
     unit = units.units_pack[sk]['ally']["default_unit"]
     unit.screen = screen
@@ -687,7 +691,10 @@ while 1:
     elif kw.run == 'start_local':
         connect_info(sc)
     elif kw.run == 'fight_local':
-        fight_local(sc, 'server', port=kw.port, ip=kw.ip)
+        if not kw.port:
+            fight_local(sc, 'server', port=kw.port, ip=kw.ip)
+        else:
+            fight_local(sc, 'client', ip=kw.ip, port=kw.port)
 
 
 
