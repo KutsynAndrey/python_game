@@ -1,13 +1,13 @@
 import pygame
 import keywords as kw
 import sys
-from button import Button, collision_rect, window_resize
-import units
+from game.classes.button import Button, collision_rect, window_resize
+from game.units import units
 import time
 import ai
-import input_box
-from socket_server import Server
-from socket_client import Client
+from game.classes import input_box
+from network.socket_server import Server
+from network.socket_client import Client
 
 pygame.init()
 
@@ -560,7 +560,7 @@ def connect_info(screen):
             if input_ip.enter:
                 kw.ip = input_ip.text
                 kw.port = int(input_port.text)
-                kw.run = 'fight_local'
+                kw.run = 'fight_local_client'
                 return
 
         else:
@@ -570,7 +570,7 @@ def connect_info(screen):
                 if button_client.collision_mouse(event):
                     side = 'client'
                 if button_create_server.collision_mouse(event):
-                    kw.run = 'fight_local'
+                    kw.run = 'fight_local_server'
                     return
 
             button_create_server.create_button()
@@ -690,11 +690,10 @@ while 1:
         fight_with_ai(sc)
     elif kw.run == 'start_local':
         connect_info(sc)
-    elif kw.run == 'fight_local':
-        if not kw.port:
-            fight_local(sc, 'server', port=kw.port, ip=kw.ip)
-        else:
-            fight_local(sc, 'client', ip=kw.ip, port=kw.port)
+    elif kw.run == 'fight_local_client':
+        fight_local(sc, 'client', port=kw.port, ip=kw.ip)
+    elif kw.run == 'fight_local_server':
+        fight_local(sc, 'server', ip=kw.ip, port=kw.port)
 
 
 

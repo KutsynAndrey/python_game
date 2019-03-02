@@ -5,7 +5,7 @@ import pickle
 class Server:
 
     def __init__(self):
-        self.port = 1024
+        self.port = 9090
         self.ip = None
         self.sock = None
         self.conn = None
@@ -35,8 +35,6 @@ class Server:
         data = self.conn.recv(size)
         data = pickle.loads(data)
         return data
-
-
 
 
 

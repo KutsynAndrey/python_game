@@ -1,5 +1,5 @@
-from bullet import Bullet
-from laser import Laser
+from game.classes.bullet import Bullet
+from game.classes.laser import Laser
 from pygame import draw
 from time import clock
 
@@ -47,6 +47,8 @@ class Plane:
         if self.sprite is None:
             if self.form == 'rect':
                 draw.rect(self.screen, self.color, (self.x, self.y, self.width, self.height))
+        else:
+            self.screen.blit(self.sprite, (self.x, self.y))
 
     def add_bullet(self):
         t = clock()

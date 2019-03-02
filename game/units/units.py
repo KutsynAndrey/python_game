@@ -1,5 +1,12 @@
-from aircraft import Plane
+from game.classes.aircraft import Plane
 from keywords import colors
+from pygame import image
+from os import path
+
+
+sprite_pack = {}
+
+sprite = image.load('game/units/img/unit_1.jpg')
 
 units_pack = {
     (1920, 1080): {
@@ -16,7 +23,7 @@ units_pack = {
                                   bullet_height=20,
                                   bullet_color=colors["pink"],
                                   bullet_speed=20,
-                                  sprite=None,
+                                  sprite=sprite,
                                   laser_color=colors["white"],
                                   laser_width=35,
                                   fire_rate=0.4,
