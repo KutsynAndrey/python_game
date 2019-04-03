@@ -53,7 +53,7 @@ def main_screen(screen):
                     text="EXIT",
                     coordinates=(w - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                     font_size=kw.settins_pack[sk]['button']['font_size'],
-                    text_color=kw.colors["green"],
+                    text_color=kw.colors["pink"],
                     background_color=kw.colors["white"]
                     )
 
