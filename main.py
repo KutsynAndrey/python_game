@@ -34,7 +34,8 @@ def main_screen(screen):
                       coordinates=(w // 4 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                       font_size=kw.settins_pack[sk]['button']['font_size'],
                       text_color=kw.colors["green"],
-                      background_color=kw.colors["white"]
+                      background_color=kw.colors["white"],
+                      sprite=kw.START_AI
                       )
 
     game_settings = Button(screen,
@@ -44,7 +45,8 @@ def main_screen(screen):
                            coordinates=(w // 2 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                            font_size=kw.settins_pack[sk]['button']['font_size'],
                            text_color=kw.colors["green"],
-                           background_color=kw.colors["white"]
+                           background_color=kw.colors["white"],
+                           sprite=kw.SETTINGS
                            )
 
     exit_b = Button(screen,
@@ -54,7 +56,8 @@ def main_screen(screen):
                     coordinates=(w - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                     font_size=kw.settins_pack[sk]['button']['font_size'],
                     text_color=kw.colors["pink"],
-                    background_color=kw.colors["white"]
+                    background_color=kw.colors["white"],
+                    sprite=kw.EXIT
                     )
 
     start_local = Button(screen,
@@ -64,7 +67,8 @@ def main_screen(screen):
                          coordinates=(w // 4 * 3 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                          font_size=kw.settins_pack[sk]['button']['font_size'],
                          text_color=kw.colors["green"],
-                         background_color=kw.colors["white"]
+                         background_color=kw.colors["white"],
+                         sprite=kw.MULTIPLAY
                          )
 
     while 1:
@@ -133,7 +137,8 @@ def settings(screen):
                    coordinates=(w // 4 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                    font_size=kw.settins_pack[sk]['button']['font_size'],
                    text_color=kw.colors["green"],
-                   background_color=kw.colors["white"]
+                   background_color=kw.colors["white"],
+                   sprite=kw.SOUND
                    )
 
     display_size = Button(screen,
@@ -143,7 +148,8 @@ def settings(screen):
                           coordinates=(w // 2 - bw - ((w // 4 - bh) // 2), h // 2 - 35),
                           font_size=kw.settins_pack[sk]['button']['font_size'],
                           text_color=kw.colors["green"],
-                          background_color=kw.colors["white"]
+                          background_color=kw.colors["white"],
+                          sprite=kw.DISPLAY
                           )
 
     back = Button(screen,
@@ -153,7 +159,8 @@ def settings(screen):
                   coordinates=(w - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                   font_size=kw.settins_pack[sk]['button']['font_size'],
                   text_color=kw.colors["green"],
-                  background_color=kw.colors["white"]
+                  background_color=kw.colors["white"],
+                  sprite=kw.BACK
                   )
 
     FreeSpace = Button(screen,
@@ -163,7 +170,8 @@ def settings(screen):
                        coordinates=(w // 4 * 3 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                        font_size=kw.settins_pack[sk]['button']['font_size'],
                        text_color=kw.colors["green"],
-                       background_color=kw.colors["white"]
+                       background_color=kw.colors["white"],
+                       sprite=kw.FREE_SPACE
                        )
 
     while 1:
@@ -230,7 +238,8 @@ def display(screen):
                      coordinates=(w // 4 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                      font_size=kw.settins_pack[sk]['button']['font_size'],
                      text_color=kw.colors["green"],
-                     background_color=kw.colors["white"]
+                     background_color=kw.colors["white"],
+                     sprite=None
                      )
 
     WXGA = Button(screen,
@@ -240,7 +249,8 @@ def display(screen):
                   coordinates=(w // 2 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                   font_size=kw.settins_pack[sk]['button']['font_size'],
                   text_color=kw.colors["green"],
-                  background_color=kw.colors["white"]
+                  background_color=kw.colors["white"],
+                  sprite=None
                   )
 
     back = Button(screen,
@@ -250,7 +260,8 @@ def display(screen):
                   coordinates=(w - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                   font_size=kw.settins_pack[sk]['button']['font_size'],
                   text_color=kw.colors["green"],
-                  background_color=kw.colors["white"]
+                  background_color=kw.colors["white"],
+                  sprite=kw.BACK
                   )
 
     fullscreen = Button(screen,
@@ -260,7 +271,8 @@ def display(screen):
                         coordinates=(w // 4 * 3 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                         font_size=kw.settins_pack[sk]['button']['font_size'],
                         text_color=kw.colors["green"],
-                        background_color=kw.colors["white"]
+                        background_color=kw.colors["white"],
+                        sprite=kw.FULL_SCREEN
                         )
 
     while 1:
@@ -329,7 +341,8 @@ def start_with_ai(screen):
                        coordinates=(w // 4 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                        font_size=kw.settins_pack[sk]['button']['font_size'],
                        text_color=kw.colors["green"],
-                       background_color=kw.colors["white"]
+                       background_color=kw.colors["white"],
+                       sprite=kw.LOW_AI
                        )
 
     medium_skill = Button(screen,
@@ -339,7 +352,8 @@ def start_with_ai(screen):
                           coordinates=(w // 2 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                           font_size=kw.settins_pack[sk]['button']['font_size'],
                           text_color=kw.colors["green"],
-                          background_color=kw.colors["white"]
+                          background_color=kw.colors["white"],
+                          sprite=kw.MEDIUM_AI
                           )
 
     back = Button(screen,
@@ -349,7 +363,8 @@ def start_with_ai(screen):
                   coordinates=(w - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                   font_size=kw.settins_pack[sk]['button']['font_size'],
                   text_color=kw.colors["green"],
-                  background_color=kw.colors["white"]
+                  background_color=kw.colors["white"],
+                  sprite=kw.BACK
                   )
 
     hard_skill = Button(screen,
@@ -359,7 +374,8 @@ def start_with_ai(screen):
                         coordinates=(w // 4 * 3 - bw - ((w // 4 - bw) // 2), h // 2 - 35),
                         font_size=kw.settins_pack[sk]['button']['font_size'],
                         text_color=kw.colors["green"],
-                        background_color=kw.colors["white"]
+                        background_color=kw.colors["white"],
+                        sprite=kw.HARD_AI
                         )
 
     while 1:
@@ -517,7 +533,8 @@ def connect_info(screen):
                            coordinates=(w // 3 - bw // 2, h // 3),
                            font_size=kw.settins_pack[sk]['button']['font_size'],
                            text_color=kw.colors["green"],
-                           background_color=kw.colors["white"]
+                           background_color=kw.colors["white"],
+                           sprite=kw.SERVER
                            )
 
     button_client = Button(screen,
@@ -527,7 +544,8 @@ def connect_info(screen):
                            coordinates=(w // 3 * 2 - bw // 2, h // 3),
                            font_size=kw.settins_pack[sk]['button']['font_size'],
                            text_color=kw.colors["green"],
-                           background_color=kw.colors["white"]
+                           background_color=kw.colors["white"],
+                           sprite=kw.CLIENT
                            )
 
     button_create_server = Button(screen,
@@ -537,7 +555,8 @@ def connect_info(screen):
                                   coordinates=(w // 2 - bw // 2, h // 2 + 80),
                                   font_size=kw.settins_pack[sk]['button']['font_size'],
                                   text_color=kw.colors["green"],
-                                  background_color=kw.colors["white"]
+                                  background_color=kw.colors["white"],
+                                  sprite=kw.CREATE
                                   )
 
     while 1:
