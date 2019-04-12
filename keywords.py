@@ -1,3 +1,20 @@
+from pygame import image
+
+EXIT = image.load('game/glob_img/EXIT.jpg')
+SETTINGS = image.load('game/glob_img/SETTINGS.jpg')
+BACK = image.load('game/glob_img/BACK.jpg')
+CLIENT = image.load('game/glob_img/CLIENT.jpg')
+CREATE = image.load('game/glob_img/CREATE.jpg')
+DISPLAY = image.load('game/glob_img/DISPLAY.jpg')
+FREE_SPACE = image.load('game/glob_img/FREE_SPACE.jpg')
+FULL_SCREEN = image.load('game/glob_img/FULL_SCREEN.jpg')
+HARD_AI = image.load('game/glob_img/HARD_AI.jpg')
+LOW_AI = image.load('game/glob_img/LOW_AI.jpg')
+MEDIUM_AI = image.load('game/glob_img/MEDIUM_AI.jpg')
+MULTIPLAY = image.load('game/glob_img/MULTIPLAY.jpg')
+SERVER = image.load('game/glob_img/SERVER.jpg')
+SOUND = image.load('game/glob_img/SOUND.jpg')
+START_AI = image.load('game/glob_img/START_AI.jpg')
 
 colors = {
     "black": (0, 0, 0),

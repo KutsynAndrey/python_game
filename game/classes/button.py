@@ -13,6 +13,7 @@ class Button:
         self.font_size = kwargs['font_size']
         self.text_color = kwargs['text_color']
         self.background_color = kwargs['background_color']
+        self.sprite = kwargs['sprite']
 
     def write_text(self):
         font1 = font.Font(None, self.font_size)
@@ -23,8 +24,11 @@ class Button:
         draw.rect(self.screen, self.background_color, (self.x, self.y, self.width, self.height))
 
     def create_button(self):
-        self.draw_background()
-        self.write_text()
+        if self.sprite is None:
+            self.draw_background()
+            self.write_text()
+        else:
+            self.screen.blit(self.sprite, (self.x, self.y))
 
     def collision_mouse(self, event):
         if event.type == MOUSEBUTTONDOWN:
