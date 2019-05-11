@@ -16,6 +16,44 @@ SERVER = image.load('game/glob_img/SERVER.jpg')
 SOUND = image.load('game/glob_img/SOUND.jpg')
 START_AI = image.load('game/glob_img/START_AI.jpg')
 
+'''button_pack = {
+    "white_background": {
+        "exit": image.load('game/glob_img/EXIT.jpg'),
+        "settings": image.load('game/glob_img/SETTINGS.jpg'),
+        "back": image.load('game/glob_img/BACK.jpg'),
+        "client": image.load('game/glob_img/CLIENT.jpg'),
+        "create": image.load('game/glob_img/CREATE.jpg'),
+        "display": image.load('game/glob_img/DISPLAY.jpg'),
+        "free_space": image.load('game/glob_img/FREE_SPACE.jpg'),
+        "full_screen": image.load('game/glob_img/FULL_SCREEN.jpg'),
+        "hard_ai": image.load('game/glob_img/HARD_AI.jpg'),
+        "low_ai": image.load('game/glob_img/LOW_AI.jpg'),
+        "medium_ai": image.load('game/glob_img/MEDIUM_AI.jpg'),
+        "multiplay": image.load('game/glob_img/MULTIPLAY.jpg'),
+        "server": image.load('game/glob_img/SERVER.jpg'),
+        "sound": image.load('game/glob_img/SOUND.jpg'),
+        "start_ai": image.load('game/glob_img/START_AI.jpg'),
+    },
+    "black_background": {
+        "exit": image.load('game/glob_img/EXIT.jpg'),
+        "settings": image.load('game/glob_img/SETTINGS.jpg'),
+        "back": image.load('game/glob_img/BACK.jpg'),
+        "client": image.load('game/glob_img/CLIENT.jpg'),
+        "create": image.load('game/glob_img/CREATE.jpg'),
+        "display": image.load('game/glob_img/DISPLAY.jpg'),
+        "free_space": image.load('game/glob_img/FREE_SPACE.jpg'),
+        "full_screen": image.load('game/glob_img/FULL_SCREEN.jpg'),
+        "hard_ai": image.load('game/glob_img/HARD_AI.jpg'),
+        "low_ai": image.load('game/glob_img/LOW_AI.jpg'),
+        "medium_ai": image.load('game/glob_img/MEDIUM_AI.jpg'),
+        "multiplay": image.load('game/glob_img/MULTIPLAY.jpg'),
+        "server": image.load('game/glob_img/SERVER.jpg'),
+        "sound": image.load('game/glob_img/SOUND.jpg'),
+        "start_ai": image.load('game/glob_img/START_AI.jpg'),
+    }
+}'''
+
+
 colors = {
     "black": (0, 0, 0),
     "white": (255, 255, 255),
@@ -48,7 +86,7 @@ settins_pack = {
     },
     (1366, 768): {
         "button": {
-            "width": 200,
+            "width": 170,
             "height": 70,
             "font_size": 50
         },
