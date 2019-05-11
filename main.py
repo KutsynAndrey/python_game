@@ -460,7 +460,6 @@ def fight_with_ai(screen):
             if keys[pygame.K_SPACE] and unit.laser is None:
                 unit.create_laser()
 
-        if not kw.pause:
             for bullet in unit.bullets:
                 bullet.create_bullet()
                 bullet.move_up()
@@ -615,13 +614,22 @@ def fight_local(screen, side, **kwargs):
         server = Server()
         server.create_server()
         server.connect()
+        sprite_name = 'unit_1.jpg'
+        server.send(sprite_name)
+        sprite_name = server.get(512)
+        enemy_unit.sprite = pygame.image.load('game/units/img/' + sprite_name)
         print('connected')
         while True:
-
+            screen.fill(kw.colors['black'])
+            server.send(unit.pack())
+            data = server.get(512)
+            enemy_unit.unpack(data)
             keys = pygame.key.get_pressed()
-
+            print(keys)
+            print("get_keys")
             if keys[pygame.K_LEFT]:
                 unit.move_left()
+                print("move_left")
             if keys[pygame.K_RIGHT]:
                 unit.move_right()
             if keys[pygame.K_UP]:
@@ -647,15 +655,24 @@ def fight_local(screen, side, **kwargs):
                     unit.health -= 5
                     enemy_unit.bullets.remove(bullet)
 
-            server.send(unit)
-            enemy_unit = server.get(2048)
+            enemy_unit.create_plane()
+            unit.create_plane()
+            pygame.display.update()
 
     elif side == 'client':
         client = Client(ip=kwargs['ip'], port=kwargs['port'])
         client.connect()
-
+        sprite_name = "unit_1.jpg"
+        client.send(sprite_name)
+        sprite_name = client.get(512)
+        enemy_unit.sprite = pygame.image.load('game/units/img/' + sprite_name)
         while True:
 
+            screen.fill(kw.colors['black'])
+            client.send(unit.pack())
+            data = client.get(512)
+            print(data)
+            enemy_unit.unpack(data)
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_LEFT]:
@@ -685,8 +702,9 @@ def fight_local(screen, side, **kwargs):
                     unit.health -= 5
                     enemy_unit.bullets.remove(bullet)
 
-            client.send(unit)
-            enemy_unit = client.get(2048)
+            enemy_unit.create_plane()
+            unit.create_plane()
+            pygame.display.update()
 
 
 while 1:

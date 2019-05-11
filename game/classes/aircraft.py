@@ -95,3 +95,18 @@ class Plane:
                 draw.rect(self.screen, color, (self.x, self.y - self.height//10 - height, width, height))
             else:
                 draw.rect(self.screen, color, (self.x, self.y + self.height + self.height // 10, width, height))
+
+    def pack(self):
+        bullets_coords = []
+        unit_coord = self.x
+        unit_health = self.health
+        for i in self.bullets:
+            bullets_coords.append(i.x)
+
+        return bullets_coords, unit_coord, unit_health
+
+    def unpack(self, data):
+        for i in range(len(data[0])):
+            self.bullets[i].x = data[0][i]
+        self.x = data[1]
+        self.health = data[2]
