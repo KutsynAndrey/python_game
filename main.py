@@ -76,7 +76,9 @@ def main_screen(screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_LEFT]:
             unit.move_left()
         if keys[pygame.K_RIGHT]:
@@ -598,7 +600,6 @@ def connect_info(screen):
 
 def fight_local(screen, side, **kwargs):
     print('local_fight')
-
     unit = units.units_pack[sk]['ally']["default_unit"]
     unit.screen = screen
     unit.x = w // 2 - unit.width // 2
@@ -624,12 +625,14 @@ def fight_local(screen, side, **kwargs):
             server.send(unit.pack())
             data = server.get(512)
             enemy_unit.unpack(data)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+
             keys = pygame.key.get_pressed()
-            print(keys)
-            print("get_keys")
             if keys[pygame.K_LEFT]:
                 unit.move_left()
-                print("move_left")
             if keys[pygame.K_RIGHT]:
                 unit.move_right()
             if keys[pygame.K_UP]:
@@ -673,6 +676,11 @@ def fight_local(screen, side, **kwargs):
             data = client.get(512)
             print(data)
             enemy_unit.unpack(data)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_LEFT]:

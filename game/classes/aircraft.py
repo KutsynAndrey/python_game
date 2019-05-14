@@ -106,7 +106,15 @@ class Plane:
         return bullets_coords, unit_coord, unit_health
 
     def unpack(self, data):
+        self.bullets.clear()
         for i in range(len(data[0])):
-            self.bullets[i].x = data[0][i]
+            bullet = Bullet(self.screen,
+                            width=self.bullet_width,
+                            height=self.bullet_height,
+                            speed=self.bullet_speed,
+                            color=self.bullet_color,
+                            coordinates=(data[0][i], self.y + self.height)
+                            )
+            self.bullets.append(bullet)
         self.x = data[1]
         self.health = data[2]
